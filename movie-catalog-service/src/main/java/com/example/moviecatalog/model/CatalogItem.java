@@ -1,13 +1,13 @@
 package com.example.moviecatalog.model;
 
-public class MovieItem {
+public class CatalogItem {
 	
 	private String name;
 	private String desc;
 	private int rating;
 	
 	
-	public MovieItem(String name, String desc, int rating) {
+	public CatalogItem(String name, String desc, int rating) {
 		super();
 		this.name = name;
 		this.desc = desc;
