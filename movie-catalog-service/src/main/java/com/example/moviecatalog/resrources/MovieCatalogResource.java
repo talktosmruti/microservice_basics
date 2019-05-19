@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.moviecatalog.model.CatalogItem;
 import com.example.moviecatalog.model.Movie;
 import com.example.moviecatalog.model.Rating;
+import com.example.moviecatalog.model.UserRating;
 
 @RestController
 @RequestMapping("/catalog")
@@ -28,18 +29,18 @@ public class MovieCatalogResource {
 		
 		
 		List<CatalogItem> catalogs = new ArrayList<>();
+		UserRating ratings = null ;
 		// Get all rated movie ids
-		List<Rating> ratings =  Arrays.asList(
-				new Rating("21", 4),
-				new Rating("22", 2)
-				);
-		for (Rating r:ratings) {
+		try {
+		 ratings = rest.getForObject("http://localhost:8083/rating/users/"+userId, UserRating.class);
+		}catch(Exception e) {
+			System.out.println(e.getClass());
+		}
+		for (Rating r:ratings.getRatings()) {
 			Movie m = rest.getForObject("http://localhost:8082/movies/"+r.getId(), Movie.class);
 			catalogs.add(new CatalogItem(m.getName(), "sample", r.getRating()));
 		}
 		//For each movie id, call movie info service and get details
-		
-		
 		return catalogs;
 
 	}

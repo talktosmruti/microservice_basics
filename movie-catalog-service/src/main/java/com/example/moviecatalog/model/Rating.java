@@ -4,6 +4,9 @@ public class Rating {
 	
 	private String id;
 	private int rating;
+	public Rating() {
+		
+	}
 	public Rating(String id, int rating) {
 		super();
 		this.id = id;
