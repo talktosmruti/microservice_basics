@@ -32,12 +32,12 @@ public class MovieCatalogResource {
 		UserRating ratings = null ;
 		// Get all rated movie ids
 		try {
-		 ratings = rest.getForObject("http://localhost:8083/rating/users/"+userId, UserRating.class);
+		 ratings = rest.getForObject("http://rating-data-service/rating/users/"+userId, UserRating.class);
 		}catch(Exception e) {
 			System.out.println(e.getClass());
 		}
 		for (Rating r:ratings.getRatings()) {
-			Movie m = rest.getForObject("http://localhost:8082/movies/"+r.getId(), Movie.class);
+			Movie m = rest.getForObject("http://movie-info-service/movies/"+r.getId(), Movie.class);
 			catalogs.add(new CatalogItem(m.getName(), "sample", r.getRating()));
 		}
 		//For each movie id, call movie info service and get details
