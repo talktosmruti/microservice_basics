@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,9 @@ public class MovieCatalogResource {
 	@Autowired
 	RestTemplate rest;
 	
+	@Autowired
+	private DiscoveryClient discClient;
+	
 	@RequestMapping(value ="/{userId}", method=RequestMethod.GET )
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 		
@@ -41,6 +46,10 @@ public class MovieCatalogResource {
 			catalogs.add(new CatalogItem(m.getName(), "sample", r.getRating()));
 		}
 		//For each movie id, call movie info service and get details
+		List<ServiceInstance> inst = discClient.getInstances("rating-data-service");
+		for( ServiceInstance i: inst) {
+			System.out.println("Service instance smruti :"+i);
+		}
 		return catalogs;
 
 	}
